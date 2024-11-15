@@ -9,4 +9,6 @@ Program wczytuje plik tekstowy, następnie jego treść wraz promptem opisujący
 - biblioteka openai
 
 ## Instrukcja uruchomienia
-
+Aby program nawiązał połączenie z API OpenAI należy ustawić zmienną środowiskową OPENAI_API_KEY z kluczem do API OprenAI jako wartość.
+1. Sklonuj repozytorium.
+2. Uruchom program main.py
