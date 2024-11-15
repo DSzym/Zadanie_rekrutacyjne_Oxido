@@ -8,3 +8,5 @@ Program wczytuje plik tekstowy, następnie jego treść wraz promptem opisujący
 - Python 3.10
 - biblioteka openai
 
+## Instrukcja uruchomienia
+
