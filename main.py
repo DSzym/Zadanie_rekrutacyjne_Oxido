@@ -1,26 +1,37 @@
-import openai
+from openai import OpenAI
+import os
 
-openai.api_key = ""
+client = OpenAI(api_key = os.environ.get("OPENAI_API_KEY"))
 prompt = ""
 
-f = open("Zadanie dla Junior AI Developera - tresc artykulu.txt", "r")
-text = f.read()
+text_file = open("Zadanie dla Junior AI Developera - tresc artykulu.txt", "r", encoding="utf-8")
+text = text_file.read()
+print(text)
 
-prompt1 = "Podany dokument przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML dla nagłówków i zwykłego tekstu."
-prompt2 = "Podany dokument przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML dla nagłówków i zwykłego tekstu. Nie dodawaj nowych nagłówków. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg."
-prompt3 = "Podany dokument przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML do strukturyzacji treści. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg. Do każdej grafiki dodaj atrybut alt z promptem do wygenerowania grafiki. Pod grafikami umieść podpisy używając odpowiednich tagów."
+prompt1 = "Podany tekst przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML dla nagłówków i zwykłego tekstu."
+prompt2 = "Podany tekst przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML dla nagłówków i zwykłego tekstu. Nie dodawaj nowych nagłówków. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg."
+prompt3 = "Podany tekst przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML do strukturyzacji treści. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg. Do każdej grafiki dodaj atrybut alt z promptem do wygenerowania grafiki. Pod grafikami umieść podpisy używając odpowiednich tagów."
+prompt4 = "Podaną treść artykułu przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML do strukturyzacji treści artykułu. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg. Do każdej grafiki dodaj atrybut alt z promptem do wygenerowania grafiki. Pod grafikami umieść podpisy używając odpowiednich tagów."
+prompt5 = "Podany tekst przekształć na kod HTML, który można umieścić między tagami <body> i </body>. Użyj odpowiednich tagów HTML do strukturyzacji treści artykułu. Nie dodawaj nowych nagłówków. Wyznacz miejsca, w których warto wstawić grafiki i oznacz je tagiem <img> z atrybutem src=image_placeholder.jpg. Do każdej grafiki dodaj atrybut alt z promptem do wygenerowania grafiki. Pod grafikami umieść podpisy używając odpowiednich tagów."
 
-"""def text_to_html():
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+def text_to_html():
+    completion = client.chat.completions.create(
+        model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": text},  # Send the long text first
-            {"role": "user", "content": prompt}    # Follow up with the specific question
+            {"role": "user", "content": text},
+            {"role": "user", "content": prompt5}
         ]
     )
-    # Extract the response content
-    message = response['choices'][0]['message']['content']
-    return message"""
 
-f.close()
+    message = completion.choices[0].message.content
+    message = message[7:-4]
+    #print(message)
+    return message
+
+#text_to_html()
+
+text_file.close()
+
+html_file = open("artykul.html", "w")
+html_file.write(text_to_html())
+html_file.close()
